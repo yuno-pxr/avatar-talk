@@ -1,0 +1,79 @@
+# Project Rules / プロジェクトルール
+
+このファイルはプロジェクトの技術スタック、コーディング規約、バージョン管理の情報をまとめたものです。開発を進める際に適宜更新してください。
+
+## 1. 技術スタック (Technology Stack)
+
+### Core
+- **Runtime**: Node.js (Electron environment)
+- **Desktop Framework**: Electron ^39.2.0
+- **Frontend Framework**: React ^19.2.0
+- **Bundler**: Vite
+- **Language**: 
+  - Frontend: TypeScript (.tsx, .ts)
+  - Electron Main Process: JavaScript (.cjs) / TypeScript
+
+### UI & Styling
+- **Styling**: TailwindCSS ^3.4.18
+- **Icons**: Lucide React
+
+## 2. コーディングルール (Coding Rules)
+
+### ファイル構成
+- `src/`: レンダープロセス（フロントエンド）のソースコード
+- `electron/`: メインプロセス（バックエンド）のソースコード
+- `public/`: 静的アセット
+
+### 命名規則
+- **コンポーネントファイル**: PascalCase (例: `App.tsx`, `HistoryItem.tsx`)
+- **ユーティリティ/ロジックファイル**: camelCase (例: `dataManager.cjs`, `calculator.ts`)
+- **コンポーネント名**: PascalCase
+- **関数・変数名**: camelCase
+
+### スタイル実装
+- 基本的に **TailwindCSS** のユーティリティクラスを使用する。
+- 複雑なスタイルや動的なスタイルが必要な場合は `index.css` またはインラインスタイルを適切に組み合わせるが、Tailwindを優先する。
+
+### Electronプロセス間通信
+- セキュリティのため、`contextBridge` を使用してAPIを公開する。
+- IPC通信は `ipcMain` (Main) と `ipcRenderer` (Renderer) を介して行う。
+
+## 3. バージョン管理とリリース (Versioning & Release)
+
+### バージョン番号
+- **形式**: SemVer (`Major.Minor.Patch`)
+- `package.json` の `version` フィールドを正とする。
+
+### リリースビルド
+- **ターゲット**: Windows Portable (Zip)
+- **ビルドコマンド**: 
+  - 開発ビルド: `npm run dev` / `npm run electron`
+  - 配布用ビルド: `npm run pack` (Electron Packager) または `npm run dist` (Electron Builder)
+  - *現状の推奨フロー*: `npm run pack` でパッケージ化し、PowerShell等でZip圧縮する。
+
+### アーティファクト
+- 出力先: `dist_packager/` (Packager使用時) または `dist_electron/` (Builder使用時)
+- 配布形式: `MonolithWidget-portable-vX.Y.Z.zip` (または `MonolithWidget-vX.Y.Z-win32-x64.zip`)
+
+## 4. �X�L���@�\ (Skin System)
+- **��`�t�@�C��**: skin.json (�K�{)
+- **�\���v�f**:
+  - ���^�f�[�^ (name, version, author)
+  - �X�^�C�� (cssFile, colors)
+  - �A�Z�b�g (images, Rive/Lottie animations)
+- **�ڍׂ� docs/skin_creation.md ���Q��**
+
+- **Build Reporting**: Always explicitly state the output directory path when a build is completed.
+
+## 開発時の重要注意事項 (v0.1.10.2追記)
+
+### React Hooks のルール厳守
+- useRef, useState, useEffect などの Hooks は、条件分岐 (if) やループ、ネストされた関数内で呼び出してはいけません。
+- 必ずコンポーネントのトップレベルで呼び出してください。
+- 違反すると、プロダクションビルド（Minified）でのみ Minified React error #321 としてクラッシュする原因になります。
+
+### 配布ビルドの作成
+- 
+pm run pack (electron-packager) を実行する際は、必ず --ignore オプションで不要なファイルを除外してください。
+- 特に、過去にビルドされたバイナリフォルダ（例: MonolithWidget-v*）が src やルートに残っている場合、これらが再帰的に取り込まれて配布ファイルサイズが肥大化します。
+- 出力先ディレクトリ (--out) は、ファイルロック回避のため、ビルドごとに新しい名前（_rev2 など）を使うか、事前に確実に削除してください。

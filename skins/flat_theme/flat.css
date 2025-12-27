@@ -1,0 +1,24 @@
+/* Flat Theme CSS */
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --accent: #3b82f6;
+}
+
+body {
+    background: var(--bg-primary) !important;
+    /* Force override any gradient on body if present usually defined in index.css */
+}
+
+/* Override common components to remove gradients/blur if desired */
+.backdrop-blur-md {
+    backdrop-filter: none !important;
+    background-color: var(--bg-secondary) !important;
+}
+
+.bg-gradient-to-b {
+    background-image: none !important;
+    background-color: var(--bg-primary) !important;
+}

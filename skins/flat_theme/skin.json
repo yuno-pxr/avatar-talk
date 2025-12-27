@@ -1,0 +1,24 @@
+{
+    "metadata": {
+        "name": "Flat Theme",
+        "version": "1.0.0",
+        "author": "Monolith",
+        "description": "A flat, non-gradient dark theme."
+    },
+    "styles": {
+        "cssFile": "flat.css",
+        "colors": {
+            "primary": "#3b82f6",
+            "background": "#121212",
+            "text": "#ffffff"
+        }
+    },
+    "assets": {
+        "animations": {
+            "waiting": {
+                "url": "https://cdn.rive.app/animations/vehicles.riv",
+                "stateMachine": "bumpy"
+            }
+        }
+    }
+}

@@ -1,0 +1,74 @@
+{
+  "name": "monolith-widget",
+  "private": true,
+  "version": "0.1.12.2",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "electron": "electron .",
+    "dev:electron": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && npm run electron\"",
+    "dist": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false ELECTRON_BUILDER_CACHE=./.cache/electron-builder npm run build && electron-builder",
+    "pack": "npm run build && electron-packager . MonolithWidget --platform=win32 --arch=x64 --out=dist_release_v0.1.12.2 --overwrite --ignore=\"^/src\" --ignore=\"^/\\.git\" --ignore=\"^/\\.cache\" --ignore=\"^/dist_.*\" --ignore=\"^/\\.gemini\" --ignore=\".*\\.zip$\" --ignore=\"^/MonolithWidget-.*\""
+  },
+  "build": {
+    "appId": "com.monolith.widget",
+    "productName": "Monolith Widget",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "verifyUpdateCodeSignature": false
+    }
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@pixiv/three-vrm": "^3.4.4",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.2",
+    "@rive-app/react-canvas": "^4.24.0",
+    "@types/three": "^0.182.0",
+    "adm-zip": "^0.5.16",
+    "iconv-lite": "^0.7.1",
+    "jimp": "^1.6.0",
+    "lodash.isequal": "^4.5.0",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^0.555.0",
+    "openai": "^6.10.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.182.0",
+    "vosk-browser": "^0.0.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.22",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^39.2.4",
+    "electron-builder": "^26.0.12",
+    "electron-packager": "^17.1.2",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^5.4.21",
+    "wait-on": "^9.0.3"
+  }
+}
